@@ -7,16 +7,16 @@
             
             myModule.controller('BillController',
             
-                function ($scope){
+                function ($scope) {
                 
                     var cc = this;
                 
-                    cc.cost = 550.0;
+                    cc.cost = 0;
                     cc.add_tax = true;
                     cc.total_bill = true;
                 
                     function update(){
-                        cc.tax = cc.add_tax ? cc.cost * 0.15 : 0.0;
+                        cc.tax = cc.add_tax * cc.cost;
                         cc.total = parseFloat(cc.cost) + cc.tax * cc.tax.amount;
                     }
                 

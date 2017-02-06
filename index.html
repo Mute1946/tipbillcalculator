@@ -1,0 +1,120 @@
+<html ng-app="TipBillCalculator">
+    <head>
+        <script src="https://code.angularjs.org/1.6.1/angular.min.js"></script>
+        <script lang="javascript">
+            
+            var myModule = angular.module('TipBillCalculator', []);
+            
+            myModule.controller('BillController',
+            
+                function ($scope){
+                
+                    var cc = this;
+                
+                    cc.cost = 550.0;
+                    cc.add_tax = true;
+                    cc.total_bill = true;
+                
+                    function update(){
+                        cc.tax = cc.add_tax ? cc.cost * 0.15 : 0.0;
+                        cc.total = parseFloat(cc.cost) + cc.tax * cc.tax.amount;
+                    }
+                
+                    //Watches when costs change
+                    $scope.$watch('cc.cost', update);
+                    $scope.$watch('cc.add_tax', update);
+					$scope.$watch('cc.tax', update);
+                    $scope.$watch('cc.cost + cc.tax', update);
+                
+                    //Bill Total
+                    cc.final_total = 0.0;
+                    cc.add = function add(){
+                        cc.final_total += cc.total;
+                    };
+                
+                    //State Tax Options
+                    cc.tax_options = [
+                        {tax:0.0901, state: "Alabama"},
+                        {tax:0.0176, state: "Alaska"},
+                        {tax:0.0825, state: "Arizona"},
+                        {tax:0.0930, state: "Arkansas"},
+                        {tax:0.0825, state: "California"},
+                        {tax:0.0750, state: "Colorado"},
+                        {tax:0.0635, state: "Connecticut"},
+                        {tax:0.000, state: "Delaware"},
+                        {tax:0.0680, state: "Florida"},
+                        {tax:0.0700, state: "Georgia"},
+                        {tax:0.0435, state: "Hawaii"},
+                        {tax:0.0603, state: "Idaho"},
+                        {tax:0.0864, state: "Illinois"},
+                        {tax:0.0700, state: "Indianan"},
+                        {tax:0.0680, state: "Iowa"},
+                        {tax:0.0862, state: "Kansas"},
+                        {tax:0.0600, state: "Kentucky"},
+                        {tax:0.0998, state: "Louisiana"},
+                        {tax:0.0550, state: "Maine"},
+                        {tax:0.0600, state: "Maryland"},
+                        {tax:0.0625, state: "Massachusetts"},
+                        {tax:0.0600, state: "Michigan"},
+                        {tax:0.0730, state: "Minnesota"},
+                        {tax:0.0707, state: "Mississippi"},
+                        {tax:0.0789, state: "Missouri"},
+                        {tax:0.0000, state: "Montana"},
+                        {tax:0.0689, state: "Nebraska"},
+                        {tax:0.0798, state: "Nevada"},
+                        {tax:0.0000, state: "New Hampshire"},
+                        {tax:0.0685, state: "New Jersey"},
+                        {tax:0.0755, state: "New Mexico"},
+                        {tax:0.0849, state: "New York"},
+                        {tax:0.0690, state: "North Carolina"},
+                        {tax:0.0678, state: "North Dakota"},
+                        {tax:0.0714, state: "Ohio"},
+                        {tax:0.0886, state: "Oklahoma"},
+                        {tax:0.0000, state: "Oregon"},
+                        {tax:0.0634, state: "Pennsylvania"},
+                        {tax:0.0700, state: "Rhode Island"},
+                        {tax:0.0722, state: "South Carolina"},
+                        {tax:0.0639, state: "South Dakota"},
+                        {tax:0.0946, state: "Tennessee"},
+                        {tax:0.0819, state: "Texas"},
+                        {tax:0.0676, state: "Utah"},
+                        {tax:0.0618, state: "Vermont"},
+                        {tax:0.0563, state: "Virginia"},
+                        {tax:0.0892, state: "Washington"},
+                        {tax:0.0629, state: "West Virginia"},
+                        {tax:0.0542, state: "Wisconsin"},
+                        {tax:0.0540, state: "Wyoming"},
+                        {tax:0.0575, state: "D.C."}
+                        ];
+                    
+                        cc.tax = cc.tax_options[0];
+                    
+                    
+                    }
+                );
+        </script>
+    </head>
+    <body>
+        <div ng-controller="BillController as cc">
+            <input type="checkbox" ng-model="cc.add_tax" />Add Tax
+            <input type="checkbox" ng-model="cc.total_bill" />Show Total
+            <p>
+                Cost: <input type="text" ng-model="cc.cost" placeholder="costs" /><br/>
+                Tax: <select ng-model="cc.tax" ng-options="t.state for t in cc.tax_options"></select>
+            </p>
+            <p>
+                This is your cost: {{cc.cost|currency}}
+            </p>
+            <p>
+                This is your tax: {{cc.tax|currency}}
+            </p>
+            <p ng-show="cc.final_total">
+                This is your final total: {{cc.total|currency}}
+                <button ng-click="cc.add()">Add</button>
+            </p>
+            <p ng-show="cc.total_bill">
+                Your running total is {{cc.total_bill|currency}}
+            </p>
+        </div>
+    </body>
+</html>
